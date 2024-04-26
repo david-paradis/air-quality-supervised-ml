@@ -45,7 +45,7 @@ Human activities like burning fossil fuels elevate greenhouse gas levels, intens
 
 
 ### Objectives
-In this study, we will classify whether a given day in a Canadian province is likely to have breathable air, using historical data. This approach allows us to identify patterns in air quality based on past readings, weather data as well as forest fires data. The target value will be the AQI index, from Hazardous to Good, which is a label on a scale that is shown below. 
+In this study, we will classify whether a given day, between May 1st and October 1st which is forest fire season, in a Canadian province is likely to have breathable air, using historical data. This approach allows us to identify patterns in air quality based on past readings, weather data as well as forest fires data. The target value will be the AQI index, from Hazardous to Good, which is a label on a scale that is shown below. 
 
 Numerous scientists have developed models that predict forest fire probabilities based on factors such as location, forest condition, rising temperatures, and decreasing humidity.  This model, while based on historical data, could also be utilized alongside forest fire forecasts to examine potential future impacts on air quality. 
 
@@ -3434,3 +3434,7 @@ https://cwfis.cfs.nrcan.gc.ca/ha/nfdb
 https://publicinterestnetwork.org/wp-content/uploads/2021/10/CA-Trouble-in-the-Air-Web.pdf
 
 https://github.com/david-paradis/air-quality-supervised-ml/
+
+
+
+
