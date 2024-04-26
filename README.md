@@ -1,5 +1,8 @@
 # Introduction To Supervised Learning Final Project: Air Quality Prediction 
 
+Link to full notebook :
+https://github.com/david-paradis/air-quality-supervised-ml/blob/main/Final%20Project.ipynb
+
 ## Introduction
 In this notebook, I will study the correlation between Canadian forest fires, climate, and the effect on air quality by predicting air quality indices (labels).
 
