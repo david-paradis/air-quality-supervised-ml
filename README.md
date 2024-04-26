@@ -1,4 +1,5 @@
 # Introduction To Supervised Learning Final Project: Air Quality Prediction 
+By David Paradis, for CSCA 5622: Introduction to Machine Learning: Supervised Learning
 
 Link to full notebook :
 https://github.com/david-paradis/air-quality-supervised-ml/blob/main/Final%20Project.ipynb
@@ -106,10 +107,6 @@ import seaborn as sns
 
 
 ```
-
-    /opt/anaconda3/lib/python3.9/site-packages/scipy/__init__.py:155: UserWarning: A NumPy version >=1.18.5 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
-      warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
-
 
 ### Data Cleaning
 
@@ -841,35 +838,420 @@ air_quality_df.sample(25)
 ```
 
 
-    ---------------------------------------------------------------------------
-
-    KeyError                                  Traceback (most recent call last)
-
-    /var/folders/kz/1xzygk7129s35248h9sy2qym0000gn/T/ipykernel_97400/1234943281.py in <module>
-         11 
-         12 # Calculate the mean pm25 value for each province
-    ---> 13 province_means = merged_df.groupby('province')['pm25_average'].transform('mean')
-         14 
-         15 # Now, fill NaN values in 'average_pm25' with their province's mean
 
 
-    /opt/anaconda3/lib/python3.9/site-packages/pandas/core/groupby/generic.py in __getitem__(self, key)
-       1336                 stacklevel=find_stack_level(),
-       1337             )
-    -> 1338         return super().__getitem__(key)
-       1339 
-       1340     def _gotitem(self, key, ndim: int, subset=None):
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-    /opt/anaconda3/lib/python3.9/site-packages/pandas/core/base.py in __getitem__(self, key)
-        248         else:
-        249             if key not in self.obj:
-    --> 250                 raise KeyError(f"Column not found: {key}")
-        251             subset = self.obj[key]
-        252             ndim = subset.ndim
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locationId</th>
+      <th>location</th>
+      <th>date</th>
+      <th>parameter</th>
+      <th>province</th>
+      <th>value</th>
+      <th>month</th>
+      <th>day_of_month</th>
+      <th>air_quality_label</th>
+      <th>air_quality_numerical</th>
+      <th>pm25_average</th>
+      <th>pm25_distance_to_average</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>43882</th>
+      <td>8867</td>
+      <td>Sudbury</td>
+      <td>2023-06-18</td>
+      <td>pm25</td>
+      <td>ON</td>
+      <td>20.125000</td>
+      <td>6</td>
+      <td>18</td>
+      <td>Moderate</td>
+      <td>2</td>
+      <td>5.378036</td>
+      <td>14.746964</td>
+    </tr>
+    <tr>
+      <th>24374</th>
+      <td>1138</td>
+      <td>Houston Firehall</td>
+      <td>2023-08-08</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>3.379167</td>
+      <td>8</td>
+      <td>8</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>11.686010</td>
+      <td>-8.306843</td>
+    </tr>
+    <tr>
+      <th>8939</th>
+      <td>491</td>
+      <td>Qu�bec - Vieux-Limoi</td>
+      <td>2023-03-30</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>4.591667</td>
+      <td>3</td>
+      <td>30</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>7.526511</td>
+      <td>-2.934844</td>
+    </tr>
+    <tr>
+      <th>28297</th>
+      <td>1506</td>
+      <td>Belleville</td>
+      <td>2023-05-26</td>
+      <td>pm25</td>
+      <td>ON</td>
+      <td>4.750000</td>
+      <td>5</td>
+      <td>26</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>6.099971</td>
+      <td>-1.349971</td>
+    </tr>
+    <tr>
+      <th>47646</th>
+      <td>236027</td>
+      <td>Auclair</td>
+      <td>2023-06-21</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>4.800000</td>
+      <td>6</td>
+      <td>21</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>3.883310</td>
+      <td>0.916690</td>
+    </tr>
+    <tr>
+      <th>40680</th>
+      <td>8695</td>
+      <td>Marystown/Burin</td>
+      <td>2023-10-10</td>
+      <td>pm25</td>
+      <td>NL</td>
+      <td>1.629167</td>
+      <td>10</td>
+      <td>10</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>4.556462</td>
+      <td>-2.927296</td>
+    </tr>
+    <tr>
+      <th>2359</th>
+      <td>390</td>
+      <td>RED DEER RIVERSIDE D</td>
+      <td>2023-09-15</td>
+      <td>pm25</td>
+      <td>AB</td>
+      <td>28.366667</td>
+      <td>9</td>
+      <td>15</td>
+      <td>Moderate</td>
+      <td>2</td>
+      <td>7.200242</td>
+      <td>21.166425</td>
+    </tr>
+    <tr>
+      <th>44729</th>
+      <td>230086</td>
+      <td>Kitimat Haul Road</td>
+      <td>2023-06-03</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>5.916667</td>
+      <td>6</td>
+      <td>3</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>3.622010</td>
+      <td>2.294657</td>
+    </tr>
+    <tr>
+      <th>44126</th>
+      <td>8867</td>
+      <td>Sudbury</td>
+      <td>2024-02-17</td>
+      <td>pm25</td>
+      <td>ON</td>
+      <td>2.869565</td>
+      <td>2</td>
+      <td>17</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>5.378036</td>
+      <td>-2.508471</td>
+    </tr>
+    <tr>
+      <th>3803</th>
+      <td>447</td>
+      <td>Saint-Hilaire-de-Dor</td>
+      <td>2023-04-11</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>10.095833</td>
+      <td>4</td>
+      <td>11</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>4.550745</td>
+      <td>5.545089</td>
+    </tr>
+    <tr>
+      <th>11380</th>
+      <td>506</td>
+      <td>Tingwick</td>
+      <td>2024-01-15</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>2.904167</td>
+      <td>1</td>
+      <td>15</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>5.471960</td>
+      <td>-2.567793</td>
+    </tr>
+    <tr>
+      <th>36540</th>
+      <td>8567</td>
+      <td>FORT ST JOHN LEARNIN</td>
+      <td>2023-05-09</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>55.390909</td>
+      <td>5</td>
+      <td>9</td>
+      <td>Unhealthy for Sensitive Groups</td>
+      <td>3</td>
+      <td>6.867819</td>
+      <td>48.523090</td>
+    </tr>
+    <tr>
+      <th>60810</th>
+      <td>1275802</td>
+      <td>Tiverton</td>
+      <td>2024-02-09</td>
+      <td>pm25</td>
+      <td>ON</td>
+      <td>9.434783</td>
+      <td>2</td>
+      <td>9</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>14.000000</td>
+      <td>-4.565217</td>
+    </tr>
+    <tr>
+      <th>3615</th>
+      <td>439</td>
+      <td>Saint-Faustin-Lac-Ca</td>
+      <td>2023-11-23</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>3.558333</td>
+      <td>11</td>
+      <td>23</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>5.045388</td>
+      <td>-1.487055</td>
+    </tr>
+    <tr>
+      <th>18555</th>
+      <td>748</td>
+      <td>CHARLOTTETOWN</td>
+      <td>2023-06-06</td>
+      <td>pm25</td>
+      <td>PE</td>
+      <td>2.304167</td>
+      <td>6</td>
+      <td>6</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>6.927930</td>
+      <td>-4.623763</td>
+    </tr>
+    <tr>
+      <th>9093</th>
+      <td>491</td>
+      <td>Qu�bec - Vieux-Limoi</td>
+      <td>2023-09-01</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>7.687500</td>
+      <td>9</td>
+      <td>1</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>7.526511</td>
+      <td>0.160989</td>
+    </tr>
+    <tr>
+      <th>51921</th>
+      <td>268739</td>
+      <td>Golden Helipad</td>
+      <td>2023-11-02</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>51.383333</td>
+      <td>11</td>
+      <td>2</td>
+      <td>Unhealthy for Sensitive Groups</td>
+      <td>3</td>
+      <td>11.472739</td>
+      <td>39.910594</td>
+    </tr>
+    <tr>
+      <th>27396</th>
+      <td>1364</td>
+      <td>Hope</td>
+      <td>2024-01-07</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>3.345833</td>
+      <td>1</td>
+      <td>7</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>6.434420</td>
+      <td>-3.088587</td>
+    </tr>
+    <tr>
+      <th>22989</th>
+      <td>988</td>
+      <td>Langdale Elementary</td>
+      <td>2024-01-29</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>2.587500</td>
+      <td>1</td>
+      <td>29</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>5.523749</td>
+      <td>-2.936249</td>
+    </tr>
+    <tr>
+      <th>62341</th>
+      <td>1289474</td>
+      <td>North Bay</td>
+      <td>2024-01-03</td>
+      <td>pm25</td>
+      <td>ON</td>
+      <td>4.913043</td>
+      <td>1</td>
+      <td>3</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>3.000000</td>
+      <td>1.913043</td>
+    </tr>
+    <tr>
+      <th>3425</th>
+      <td>439</td>
+      <td>Saint-Faustin-Lac-Ca</td>
+      <td>2023-05-11</td>
+      <td>pm25</td>
+      <td>QC</td>
+      <td>13.112500</td>
+      <td>5</td>
+      <td>11</td>
+      <td>Moderate</td>
+      <td>2</td>
+      <td>5.045388</td>
+      <td>8.067112</td>
+    </tr>
+    <tr>
+      <th>43577</th>
+      <td>8817</td>
+      <td>Sarnia</td>
+      <td>2024-04-05</td>
+      <td>pm25</td>
+      <td>ON</td>
+      <td>1.458333</td>
+      <td>4</td>
+      <td>5</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>7.395996</td>
+      <td>-5.937662</td>
+    </tr>
+    <tr>
+      <th>21994</th>
+      <td>836</td>
+      <td>Abbotsford Airport</td>
+      <td>2023-06-22</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>5.287500</td>
+      <td>6</td>
+      <td>22</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>5.909470</td>
+      <td>-0.621970</td>
+    </tr>
+    <tr>
+      <th>37959</th>
+      <td>8642</td>
+      <td>KITIMAT WHITESAIL</td>
+      <td>2024-01-04</td>
+      <td>pm25</td>
+      <td>BC</td>
+      <td>4.444444</td>
+      <td>1</td>
+      <td>4</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>4.000465</td>
+      <td>0.443980</td>
+    </tr>
+    <tr>
+      <th>40648</th>
+      <td>8695</td>
+      <td>Marystown/Burin</td>
+      <td>2023-09-08</td>
+      <td>pm25</td>
+      <td>NL</td>
+      <td>3.212500</td>
+      <td>9</td>
+      <td>8</td>
+      <td>Good</td>
+      <td>1</td>
+      <td>4.556462</td>
+      <td>-1.343962</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-
-    KeyError: 'Column not found: pm25_average'
 
 
 ### Climate data
@@ -947,107 +1329,68 @@ daily_aggregates.sample(25)
   </thead>
   <tbody>
     <tr>
-      <th>1801</th>
+      <th>1485</th>
       <td>NL</td>
       <td>2023</td>
-      <td>12</td>
-      <td>9</td>
-      <td>1.70</td>
-      <td>0.10</td>
-      <td>97.0</td>
-      <td>83.0</td>
-      <td>3.4</td>
-      <td>79.0</td>
-    </tr>
-    <tr>
-      <th>1500</th>
-      <td>NL</td>
-      <td>2023</td>
-      <td>2</td>
-      <td>11</td>
-      <td>1.90</td>
-      <td>-10.50</td>
+      <td>1</td>
+      <td>27</td>
+      <td>7.50</td>
+      <td>-2.00</td>
       <td>98.0</td>
-      <td>75.0</td>
-      <td>1.2</td>
-      <td>82.0</td>
+      <td>71.0</td>
+      <td>11.4</td>
+      <td>90.0</td>
     </tr>
     <tr>
-      <th>347</th>
+      <th>206</th>
       <td>AB</td>
       <td>2023</td>
-      <td>12</td>
-      <td>14</td>
+      <td>7</td>
+      <td>26</td>
+      <td>19.45</td>
       <td>7.95</td>
-      <td>-0.65</td>
-      <td>97.0</td>
-      <td>37.0</td>
-      <td>1.0</td>
-      <td>36.0</td>
-    </tr>
-    <tr>
-      <th>2311</th>
-      <td>NT</td>
-      <td>2023</td>
-      <td>5</td>
-      <td>3</td>
-      <td>22.30</td>
-      <td>4.30</td>
-      <td>74.0</td>
-      <td>25.0</td>
-      <td>0.0</td>
+      <td>91.0</td>
+      <td>52.0</td>
+      <td>8.4</td>
       <td>49.0</td>
     </tr>
     <tr>
-      <th>1244</th>
-      <td>NB</td>
-      <td>2023</td>
-      <td>5</td>
-      <td>30</td>
-      <td>24.80</td>
-      <td>2.90</td>
-      <td>90.0</td>
-      <td>23.0</td>
-      <td>0.0</td>
-      <td>42.0</td>
-    </tr>
-    <tr>
-      <th>1324</th>
-      <td>NB</td>
-      <td>2023</td>
-      <td>8</td>
-      <td>18</td>
-      <td>23.20</td>
-      <td>16.20</td>
-      <td>100.0</td>
-      <td>95.0</td>
-      <td>0.0</td>
-      <td>33.0</td>
-    </tr>
-    <tr>
-      <th>3790</th>
+      <th>3865</th>
       <td>QC</td>
       <td>2023</td>
+      <td>8</td>
       <td>5</td>
-      <td>22</td>
-      <td>14.90</td>
-      <td>2.25</td>
-      <td>68.5</td>
-      <td>23.0</td>
+      <td>23.95</td>
+      <td>14.10</td>
+      <td>93.5</td>
+      <td>50.0</td>
       <td>0.0</td>
       <td>34.0</td>
     </tr>
     <tr>
-      <th>2488</th>
-      <td>NT</td>
+      <th>1112</th>
+      <td>NB</td>
       <td>2023</td>
-      <td>10</td>
-      <td>27</td>
-      <td>-5.20</td>
-      <td>-11.30</td>
-      <td>95.0</td>
-      <td>82.0</td>
-      <td>0.2</td>
+      <td>1</td>
+      <td>18</td>
+      <td>1.00</td>
+      <td>-1.10</td>
+      <td>96.0</td>
+      <td>87.0</td>
+      <td>0.0</td>
+      <td>37.0</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>AB</td>
+      <td>2023</td>
+      <td>4</td>
+      <td>3</td>
+      <td>2.95</td>
+      <td>-4.55</td>
+      <td>93.5</td>
+      <td>51.0</td>
+      <td>0.0</td>
       <td>NaN</td>
     </tr>
     <tr>
@@ -1064,212 +1407,251 @@ daily_aggregates.sample(25)
       <td>NaN</td>
     </tr>
     <tr>
-      <th>193</th>
-      <td>AB</td>
-      <td>2023</td>
-      <td>7</td>
-      <td>13</td>
-      <td>23.60</td>
-      <td>12.30</td>
-      <td>87.5</td>
-      <td>51.0</td>
-      <td>0.8</td>
-      <td>49.0</td>
-    </tr>
-    <tr>
-      <th>2760</th>
-      <td>NU</td>
-      <td>2023</td>
-      <td>7</td>
-      <td>26</td>
-      <td>10.40</td>
-      <td>5.60</td>
-      <td>95.0</td>
-      <td>70.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4442</th>
-      <td>YT</td>
-      <td>2023</td>
-      <td>3</td>
-      <td>5</td>
-      <td>-12.90</td>
-      <td>-27.90</td>
-      <td>79.0</td>
-      <td>46.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>154</th>
-      <td>AB</td>
-      <td>2023</td>
-      <td>6</td>
-      <td>4</td>
-      <td>29.10</td>
-      <td>10.05</td>
-      <td>95.5</td>
-      <td>24.5</td>
-      <td>0.0</td>
-      <td>39.5</td>
-    </tr>
-    <tr>
-      <th>233</th>
-      <td>AB</td>
-      <td>2023</td>
-      <td>8</td>
-      <td>22</td>
-      <td>19.10</td>
-      <td>13.65</td>
-      <td>98.0</td>
-      <td>73.5</td>
-      <td>4.5</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2059</th>
-      <td>NS</td>
-      <td>2023</td>
-      <td>8</td>
-      <td>24</td>
-      <td>24.10</td>
-      <td>12.00</td>
-      <td>88.0</td>
-      <td>40.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4374</th>
-      <td>SK</td>
-      <td>2023</td>
-      <td>12</td>
-      <td>27</td>
-      <td>2.75</td>
-      <td>-11.40</td>
-      <td>90.5</td>
-      <td>55.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2786</th>
-      <td>NU</td>
-      <td>2023</td>
-      <td>8</td>
-      <td>21</td>
-      <td>12.50</td>
-      <td>6.90</td>
-      <td>97.0</td>
-      <td>68.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>202</th>
-      <td>AB</td>
-      <td>2023</td>
-      <td>7</td>
-      <td>22</td>
-      <td>29.05</td>
-      <td>13.35</td>
-      <td>92.0</td>
-      <td>36.5</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2051</th>
-      <td>NS</td>
-      <td>2023</td>
-      <td>8</td>
-      <td>16</td>
-      <td>21.20</td>
-      <td>16.00</td>
-      <td>100.0</td>
-      <td>78.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1047</th>
+      <th>1021</th>
       <td>MB</td>
       <td>2023</td>
-      <td>11</td>
-      <td>14</td>
-      <td>9.80</td>
-      <td>1.10</td>
-      <td>86.0</td>
-      <td>48.0</td>
+      <td>10</td>
+      <td>19</td>
+      <td>17.10</td>
+      <td>5.90</td>
+      <td>100.0</td>
+      <td>58.0</td>
       <td>0.0</td>
-      <td>41.0</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>3695</th>
-      <td>QC</td>
+      <th>354</th>
+      <td>AB</td>
+      <td>2023</td>
+      <td>12</td>
+      <td>21</td>
+      <td>6.10</td>
+      <td>-4.95</td>
+      <td>93.0</td>
+      <td>55.0</td>
+      <td>0.0</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>1033</th>
+      <td>MB</td>
+      <td>2023</td>
+      <td>10</td>
+      <td>31</td>
+      <td>-4.40</td>
+      <td>-11.70</td>
+      <td>93.0</td>
+      <td>64.0</td>
+      <td>0.0</td>
+      <td>34.0</td>
+    </tr>
+    <tr>
+      <th>4670</th>
+      <td>YT</td>
+      <td>2023</td>
+      <td>10</td>
+      <td>19</td>
+      <td>7.50</td>
+      <td>-1.70</td>
+      <td>92.0</td>
+      <td>79.0</td>
+      <td>0.0</td>
+      <td>31.0</td>
+    </tr>
+    <tr>
+      <th>4068</th>
+      <td>SK</td>
       <td>2023</td>
       <td>2</td>
-      <td>16</td>
-      <td>5.00</td>
-      <td>-3.15</td>
-      <td>86.0</td>
-      <td>56.5</td>
-      <td>0.4</td>
+      <td>24</td>
+      <td>-20.10</td>
+      <td>-29.90</td>
+      <td>77.5</td>
+      <td>67.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4618</th>
+      <td>YT</td>
+      <td>2023</td>
+      <td>8</td>
+      <td>28</td>
+      <td>27.50</td>
+      <td>11.80</td>
+      <td>78.0</td>
+      <td>36.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2426</th>
+      <td>NT</td>
+      <td>2023</td>
+      <td>8</td>
+      <td>26</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2799</th>
+      <td>NU</td>
+      <td>2023</td>
+      <td>9</td>
+      <td>3</td>
+      <td>5.70</td>
+      <td>3.00</td>
+      <td>100.0</td>
+      <td>70.0</td>
+      <td>0.0</td>
+      <td>51.0</td>
+    </tr>
+    <tr>
+      <th>1585</th>
+      <td>NL</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>7</td>
+      <td>10.70</td>
+      <td>0.40</td>
+      <td>100.0</td>
+      <td>48.0</td>
+      <td>0.0</td>
       <td>52.0</td>
     </tr>
     <tr>
-      <th>4268</th>
+      <th>3049</th>
+      <td>ON</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>11</td>
+      <td>26.35</td>
+      <td>9.20</td>
+      <td>68.5</td>
+      <td>28.5</td>
+      <td>0.0</td>
+      <td>42.0</td>
+    </tr>
+    <tr>
+      <th>4026</th>
       <td>SK</td>
       <td>2023</td>
-      <td>9</td>
-      <td>12</td>
-      <td>26.00</td>
-      <td>7.95</td>
-      <td>86.5</td>
-      <td>32.0</td>
-      <td>0.0</td>
-      <td>43.0</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>AB</td>
-      <td>2023</td>
       <td>1</td>
-      <td>25</td>
-      <td>4.30</td>
-      <td>-5.65</td>
-      <td>87.0</td>
-      <td>58.5</td>
-      <td>0.1</td>
-      <td>36.0</td>
-    </tr>
-    <tr>
-      <th>572</th>
-      <td>BC</td>
-      <td>2023</td>
-      <td>7</td>
-      <td>27</td>
-      <td>22.40</td>
-      <td>14.00</td>
+      <td>13</td>
+      <td>-8.60</td>
+      <td>-15.90</td>
       <td>90.0</td>
-      <td>55.0</td>
+      <td>83.5</td>
       <td>0.0</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>2525</th>
+      <th>4206</th>
+      <td>SK</td>
+      <td>2023</td>
+      <td>7</td>
+      <td>12</td>
+      <td>23.75</td>
+      <td>10.60</td>
+      <td>93.0</td>
+      <td>44.5</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>822</th>
+      <td>MB</td>
+      <td>2023</td>
+      <td>4</td>
+      <td>3</td>
+      <td>-2.60</td>
+      <td>-10.90</td>
+      <td>93.0</td>
+      <td>62.0</td>
+      <td>0.0</td>
+      <td>37.0</td>
+    </tr>
+    <tr>
+      <th>2543</th>
       <td>NT</td>
       <td>2023</td>
       <td>12</td>
+      <td>21</td>
+      <td>-10.80</td>
+      <td>-20.10</td>
+      <td>91.0</td>
+      <td>84.0</td>
+      <td>0.2</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1887</th>
+      <td>NS</td>
+      <td>2023</td>
       <td>3</td>
-      <td>-18.80</td>
-      <td>-29.00</td>
-      <td>83.0</td>
-      <td>76.0</td>
+      <td>5</td>
+      <td>2.00</td>
+      <td>-9.80</td>
+      <td>78.0</td>
+      <td>43.0</td>
+      <td>0.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>4686</th>
+      <td>YT</td>
+      <td>2023</td>
+      <td>11</td>
+      <td>4</td>
+      <td>1.00</td>
+      <td>-2.20</td>
+      <td>98.0</td>
+      <td>91.0</td>
       <td>0.0</td>
       <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4233</th>
+      <td>SK</td>
+      <td>2023</td>
+      <td>8</td>
+      <td>8</td>
+      <td>24.15</td>
+      <td>8.20</td>
+      <td>94.0</td>
+      <td>31.5</td>
+      <td>0.0</td>
+      <td>33.0</td>
+    </tr>
+    <tr>
+      <th>998</th>
+      <td>MB</td>
+      <td>2023</td>
+      <td>9</td>
+      <td>26</td>
+      <td>24.20</td>
+      <td>10.60</td>
+      <td>99.0</td>
+      <td>50.0</td>
+      <td>0.0</td>
+      <td>32.0</td>
+    </tr>
+    <tr>
+      <th>2531</th>
+      <td>NT</td>
+      <td>2023</td>
+      <td>12</td>
+      <td>9</td>
+      <td>-9.70</td>
+      <td>-12.50</td>
+      <td>92.0</td>
+      <td>90.0</td>
+      <td>0.0</td>
+      <td>37.0</td>
     </tr>
   </tbody>
 </table>
@@ -1444,6 +1826,8 @@ plt.show()
     
 
 
+Demonstrate that 2023 was warmer than usual across Canada.
+
 
 ```python
 # Plot weather trends by province by month
@@ -1466,6 +1850,8 @@ province_mapping = {
     'Winnipeg, MB': 'MB',
     'Yellowknife, NT': 'NT'
 }
+
+# Data handpicked from Climate Weather Canada 
 data = {
     'Community': ['Charlottetown, PE', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Iqaluit, NU',
                   'Quebec City, QC', 'Regina, SK', 'St. John\'s, NL', 'Toronto, ON', 'Victoria, BC',
@@ -1512,7 +1898,7 @@ plt.show()
 
 
     
-![png](Final%20Project_files/Final%20Project_25_1.png)
+![png](Final%20Project_files/Final%20Project_26_1.png)
     
 
 
@@ -1525,7 +1911,6 @@ july_2023_data = climate_df[(climate_df['MONTH'] == 7) & (climate_df['YEAR'] == 
 july_2023_averages = july_2023_data.groupby('PROVINCE_CODE')['MAX_TEMPERATURE'].mean()
 
 # Calculate differences from the general July averages
-# Assuming 'july_highs' DataFrame has the general July averages under 'July_Avg_High_C' and mapped 'PROVINCE_CODE'
 july_highs.set_index('PROVINCE_CODE', inplace=True)
 differences = july_2023_averages - july_highs['July_Avg_High_C']
 
@@ -1547,13 +1932,38 @@ plt.show()
 
 
     
-![png](Final%20Project_files/Final%20Project_26_0.png)
+![png](Final%20Project_files/Final%20Project_27_0.png)
     
 
 
 ## Model Building and Training
-Explain the choice of algorithms, the model training process, and any preprocessing steps like scaling or encoding.
+### Choice of Model
+For this study, the RandomForestClassifier from scikit-learn was selected as the primary model for predicting outcomes based on our labeled data. This decision was influenced by several factors:
 
+Robustness to Overfitting: Random forests are inherently robust against overfitting, which makes them suitable for our dataset with its complex and potentially noisy features derived from multiple sources (air quality indices, weather data, and wildfire metrics).
+
+Ability to Handle Non-linear Relationships: Given the complex nature of environmental data, where relationships between features may not be linear, the random forest's ability to handle non-linearity without explicit model tuning is a significant advantage.
+
+Feature Importance: This model provides straightforward insights into which features are most influential in predicting outcomes, which is crucial for understanding the impact of different environmental factors on air quality and wildfire occurrences.
+
+Flexibility and Scalability: The model is known for its flexibility in handling various types of data and its scalability, which is beneficial for analyzing datasets that could expand in future studies.
+
+### Configuration of the Model
+The RandomForestClassifier was configured with specific hyperparameters tailored to optimize performance for our dataset:
+
+n_estimators: Set to 100, indicating the model will use 100 trees. Increasing the number of trees can lead to better performance but requires more computational power and time.
+
+max_depth: Set to None, allowing the trees to expand until all leaves are pure or contain less than min_samples_split samples.
+
+min_samples_split: Set to 2, the smallest number to split a node. Smaller values prevent the model from generalizing well, while larger values might lead to underfitting.
+
+max_features: Set to 'auto', which uses the square root of the number of features at each split, providing a good balance between prediction accuracy and model complexity.
+
+### Model Training
+The model was trained using a training dataset comprising 70% of the total data, with the remaining 30% reserved for testing and validation. This split ensures that the model is tested on unseen data, providing a fair assessment of its predictive power.
+
+### Model Validation
+Validation was conducted through k-fold cross-validation (with k=10), providing a robust estimate of the model's performance across different subsets of the data. This method helps in identifying any potential issues with model stability and generalizability.
 
 
 ### Preprocessing
@@ -1669,13 +2079,97 @@ final_df.sample(20)
   </thead>
   <tbody>
     <tr>
-      <th>2023-08-10</th>
-      <td>10</td>
-      <td>8</td>
+      <th>2023-06-30</th>
+      <td>30</td>
+      <td>6</td>
       <td>1</td>
-      <td>21.1</td>
-      <td>49.0</td>
-      <td>1.713955</td>
+      <td>22.0</td>
+      <td>53.0</td>
+      <td>-1.759420</td>
+      <td>2217</td>
+      <td>1392</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-08-26</th>
+      <td>26</td>
+      <td>8</td>
+      <td>2</td>
+      <td>23.4</td>
+      <td>56.0</td>
+      <td>18.468463</td>
+      <td>2217</td>
+      <td>1392</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-06-12</th>
+      <td>12</td>
+      <td>6</td>
+      <td>2</td>
+      <td>29.6</td>
+      <td>38.0</td>
+      <td>9.423048</td>
+      <td>690</td>
+      <td>458</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-06-04</th>
+      <td>4</td>
+      <td>6</td>
+      <td>1</td>
+      <td>23.0</td>
+      <td>24.0</td>
+      <td>-3.225395</td>
+      <td>731</td>
+      <td>675</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-07-17</th>
+      <td>17</td>
+      <td>7</td>
+      <td>3</td>
+      <td>22.1</td>
+      <td>60.0</td>
+      <td>35.719100</td>
       <td>952</td>
       <td>1181</td>
       <td>1.0</td>
@@ -1690,45 +2184,24 @@ final_df.sample(20)
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-06-25</th>
-      <td>25</td>
-      <td>6</td>
-      <td>5</td>
-      <td>26.4</td>
-      <td>43.0</td>
-      <td>223.648776</td>
-      <td>690</td>
-      <td>458</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-08-28</th>
+      <th>2023-05-28</th>
       <td>28</td>
-      <td>8</td>
+      <td>5</td>
       <td>1</td>
-      <td>25.1</td>
-      <td>52.0</td>
-      <td>-0.045085</td>
-      <td>690</td>
-      <td>458</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>25.7</td>
+      <td>24.0</td>
+      <td>-2.723342</td>
+      <td>952</td>
+      <td>1181</td>
       <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>0.0</td>
     </tr>
     <tr>
@@ -1736,37 +2209,16 @@ final_df.sample(20)
       <td>31</td>
       <td>7</td>
       <td>1</td>
-      <td>22.8</td>
+      <td>28.2</td>
       <td>19.0</td>
-      <td>0.267952</td>
-      <td>690</td>
-      <td>458</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>0.695255</td>
+      <td>952</td>
+      <td>1181</td>
       <td>1.0</td>
       <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-07-11</th>
-      <td>11</td>
-      <td>7</td>
-      <td>1</td>
-      <td>14.6</td>
-      <td>98.0</td>
-      <td>-1.072799</td>
-      <td>100</td>
-      <td>96</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -1774,97 +2226,34 @@ final_df.sample(20)
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-09-02</th>
-      <td>2</td>
-      <td>9</td>
-      <td>1</td>
-      <td>24.6</td>
-      <td>58.0</td>
-      <td>-0.800009</td>
-      <td>690</td>
-      <td>458</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-07-05</th>
+      <th>2023-05-13</th>
+      <td>13</td>
       <td>5</td>
-      <td>7</td>
-      <td>1</td>
-      <td>21.2</td>
-      <td>34.0</td>
-      <td>-6.546965</td>
-      <td>297</td>
-      <td>342</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-06-01</th>
-      <td>1</td>
-      <td>6</td>
-      <td>1</td>
-      <td>18.3</td>
-      <td>41.0</td>
-      <td>2.989887</td>
-      <td>2217</td>
-      <td>1392</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-09-29</th>
-      <td>29</td>
-      <td>9</td>
       <td>1</td>
       <td>21.9</td>
-      <td>59.0</td>
-      <td>5.291667</td>
-      <td>731</td>
-      <td>675</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>53.0</td>
+      <td>0.358697</td>
+      <td>2217</td>
+      <td>1392</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-07-09</th>
-      <td>9</td>
-      <td>7</td>
+      <th>2023-05-06</th>
+      <td>6</td>
+      <td>5</td>
       <td>1</td>
-      <td>25.5</td>
-      <td>56.0</td>
-      <td>5.043882</td>
+      <td>17.9</td>
+      <td>29.0</td>
+      <td>1.099195</td>
       <td>731</td>
       <td>675</td>
       <td>0.0</td>
@@ -1879,13 +2268,34 @@ final_df.sample(20)
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-05-16</th>
-      <td>16</td>
+      <th>2023-07-27</th>
+      <td>27</td>
+      <td>7</td>
+      <td>2</td>
+      <td>29.6</td>
+      <td>51.0</td>
+      <td>6.794686</td>
+      <td>731</td>
+      <td>675</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-05-10</th>
+      <td>10</td>
       <td>5</td>
       <td>2</td>
-      <td>21.4</td>
-      <td>21.0</td>
-      <td>16.853189</td>
+      <td>20.6</td>
+      <td>39.0</td>
+      <td>6.256664</td>
       <td>952</td>
       <td>1181</td>
       <td>1.0</td>
@@ -1900,55 +2310,34 @@ final_df.sample(20)
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-08-13</th>
-      <td>13</td>
+      <th>2023-06-08</th>
       <td>8</td>
-      <td>1</td>
-      <td>27.8</td>
-      <td>38.0</td>
-      <td>-0.463477</td>
-      <td>952</td>
-      <td>1181</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-06-29</th>
-      <td>29</td>
-      <td>6</td>
-      <td>2</td>
-      <td>25.6</td>
-      <td>31.0</td>
-      <td>12.818084</td>
-      <td>731</td>
-      <td>675</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-06-20</th>
-      <td>20</td>
       <td>6</td>
       <td>1</td>
-      <td>10.1</td>
-      <td>87.0</td>
-      <td>-5.572503</td>
+      <td>15.0</td>
+      <td>76.0</td>
+      <td>-4.080677</td>
+      <td>690</td>
+      <td>458</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-08-10</th>
+      <td>10</td>
+      <td>8</td>
+      <td>1</td>
+      <td>24.8</td>
+      <td>39.0</td>
+      <td>-1.985003</td>
       <td>952</td>
       <td>1181</td>
       <td>1.0</td>
@@ -1963,97 +2352,55 @@ final_df.sample(20)
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-08-15</th>
-      <td>15</td>
-      <td>8</td>
-      <td>2</td>
-      <td>22.7</td>
-      <td>62.0</td>
-      <td>18.791667</td>
-      <td>731</td>
-      <td>675</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-08-16</th>
-      <td>16</td>
-      <td>8</td>
+      <th>2023-05-10</th>
+      <td>10</td>
+      <td>5</td>
       <td>1</td>
-      <td>24.7</td>
-      <td>64.0</td>
-      <td>-1.131625</td>
-      <td>2217</td>
-      <td>1392</td>
+      <td>23.0</td>
+      <td>25.0</td>
+      <td>-0.528418</td>
+      <td>690</td>
+      <td>458</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-05-01</th>
+      <td>1</td>
+      <td>5</td>
+      <td>1</td>
+      <td>9.9</td>
+      <td>76.0</td>
+      <td>-3.962055</td>
+      <td>690</td>
+      <td>458</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-06-24</th>
+      <th>2023-09-24</th>
       <td>24</td>
-      <td>6</td>
-      <td>1</td>
-      <td>28.0</td>
-      <td>63.0</td>
-      <td>0.003106</td>
-      <td>731</td>
-      <td>675</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-06-01</th>
-      <td>1</td>
-      <td>6</td>
-      <td>2</td>
-      <td>35.1</td>
-      <td>26.0</td>
-      <td>9.863372</td>
-      <td>731</td>
-      <td>675</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2023-09-25</th>
-      <td>25</td>
       <td>9</td>
       <td>1</td>
-      <td>15.7</td>
-      <td>86.0</td>
-      <td>-0.372010</td>
+      <td>19.9</td>
+      <td>47.0</td>
+      <td>-2.082021</td>
       <td>2217</td>
       <td>1392</td>
       <td>0.0</td>
@@ -2068,15 +2415,58 @@ final_df.sample(20)
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2023-09-14</th>
-      <td>14</td>
-      <td>9</td>
-      <td>2</td>
-      <td>18.6</td>
-      <td>32.0</td>
-      <td>7.796542</td>
-      <td>952</td>
-      <td>1181</td>
+      <th>2023-06-26</th>
+      <td>26</td>
+      <td>6</td>
+      <td>1</td>
+      <td>18.7</td>
+      <td>87.0</td>
+      <td>1.276446</td>
+      <td>216</td>
+      <td>172</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-08-28</th>
+      <td>28</td>
+      <td>8</td>
+      <td>1</td>
+      <td>22.8</td>
+      <td>47.0</td>
+      <td>-14.625000</td>
+      <td>731</td>
+      <td>675</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-05-04</th>
+      <td>4</td>
+      <td>5</td>
+      <td>1</td>
+      <td>19.1</td>
+      <td>68.0</td>
+      <td>3.247390</td>
+      <td>2217</td>
+      <td>1392</td>
+      <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2086,6 +2476,26 @@ final_df.sample(20)
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-09-17</th>
+      <td>17</td>
+      <td>9</td>
+      <td>1</td>
+      <td>24.1</td>
+      <td>50.0</td>
+      <td>-0.021875</td>
+      <td>690</td>
+      <td>458</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
       <td>0.0</td>
     </tr>
   </tbody>
@@ -2108,7 +2518,7 @@ plt.show()
 
 
     
-![png](Final%20Project_files/Final%20Project_30_0.png)
+![png](Final%20Project_files/Final%20Project_31_0.png)
     
 
 
@@ -2127,7 +2537,13 @@ data = final_df
 X_train, X_test, y_train, y_test = train_test_split(data.drop('air_quality_numerical', axis=1), data['air_quality_numerical'], test_size=0.3, random_state=42)
 
 # Create model
-clf = RandomForestClassifier(random_state=42)
+clf = RandomForestClassifier(
+    n_estimators=100,    # Number of trees in the forest
+    max_depth=None,      # Max depth of each tree. 'None' means nodes are expanded until all leaves are pure or contain less than min_samples_split samples
+    min_samples_split=2, # Minimum number of samples required to split an internal node
+    max_features='auto', # Number of features to consider when looking for the best split: "auto" means sqrt(n_features)
+    random_state=42      # Ensures a deterministic behavior when fitting
+)
 
 # Fit the model on the training data
 clf.fit(X_train, y_train)
@@ -2152,7 +2568,7 @@ train_preds = clf.predict(X_train)
 print(f"Training Accuracy: {accuracy_score(y_train, train_preds):.2f}")
 
 # Perform cross-validation
-cv_scores = cross_val_score(clf, X_train, y_train, cv=5)
+cv_scores = cross_val_score(clf, X_train, y_train, cv=10)
 print(f"Cross-Validated Scores: {cv_scores}")
 print(f"Mean CV Score: {np.mean(cv_scores):.2f}")
 
@@ -2175,7 +2591,8 @@ plt.show()
 ```
 
     Training Accuracy: 1.00
-    Cross-Validated Scores: [0.93723029 0.93840722 0.93388268 0.93329409 0.93545223]
+    Cross-Validated Scores: [0.93723029 0.94468419 0.93369949 0.9376226  0.92703021 0.9376226
+     0.92977638 0.93720565 0.93210361 0.9399529 ]
     Mean CV Score: 0.94
     Class distribution in training set:
     1    0.685291
@@ -2189,9 +2606,11 @@ plt.show()
 
 
     
-![png](Final%20Project_files/Final%20Project_34_1.png)
+![png](Final%20Project_files/Final%20Project_35_1.png)
     
 
+
+We obtain a very good accuracy at around 0.94, with a confusion matrix demonstrating that the model can correctly predict across all 6 labels.
 
 
 ```python
@@ -2221,9 +2640,11 @@ plt.show()
 
 
     
-![png](Final%20Project_files/Final%20Project_35_0.png)
+![png](Final%20Project_files/Final%20Project_37_0.png)
     
 
+
+As we can see, the PM2.5 distance to the average contributes very significantly to the model. Therefore, it is safe to conclude that the wildfires have a great incidency on the air quality in a province. It is interesting to note that the maximum temperature as well as the relative humidity also contribute, which is understandable given that fires happen when temperatures are warm and relative humidity low.
 
 ### Predict future dates
 
@@ -2975,7 +3396,7 @@ plt.show()
 
 
     
-![png](Final%20Project_files/Final%20Project_38_0.png)
+![png](Final%20Project_files/Final%20Project_41_0.png)
     
 
 
@@ -3012,3 +3433,4 @@ https://cwfis.cfs.nrcan.gc.ca/ha/nfdb
 
 https://publicinterestnetwork.org/wp-content/uploads/2021/10/CA-Trouble-in-the-Air-Web.pdf
 
+https://github.com/david-paradis/air-quality-supervised-ml/
