@@ -1,0 +1,3 @@
+locationId,location,parameter,value,date,unit,coordinates,country,city,isMobile,isAnalysis,entity,sensorType
+1275790,Grand Bend,pm25,24.0,"{'utc': '2023-07-17T17:00:00+00:00', 'local': '2023-07-17T13:00:00-04:00'}",µg/m³,"{'latitude': 42.333083, 'longitude': -81.742889}",CA,,False,,Governmental Organization,reference grade
+1275790,Grand Bend,pm25,24.0,"{'utc': '2023-07-16T18:00:00+00:00', 'local': '2023-07-16T14:00:00-04:00'}",µg/m³,"{'latitude': 42.333083, 'longitude': -81.742889}",CA,,False,,Governmental Organization,reference grade
